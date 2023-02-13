@@ -140,7 +140,7 @@ RUN echo "Installing OpenCV 4.4 ..." && \
 
 RUN echo "Getting ORB-SLAM 3 installation ready ..." && \
     cd /dpds/ && \
-    git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git ORB_SLAM3
+    git clone https://github.com/KevinFham/ORB_SLAM3_Modified.git ORB_SLAM3
 
 #-! From here, a compilation method is proposed by the repo: "chmod +x build.sh && ./build.sh"
 #-! Such method remove some control over the image build (simultaneous jobs number, directories, OpenCV version etc.) 
