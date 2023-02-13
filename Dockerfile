@@ -5,6 +5,9 @@ FROM edcela/ros-noetic:latest
     #-[] Install dependencies
 RUN apt-get update && \
     apt-get -y upgrade
+    
+    #-> Create directories
+RUN mkdir /app /dpds
 
     #-> Install general usage dependencies
 RUN echo "Installing general usage dependencies ..." && \
