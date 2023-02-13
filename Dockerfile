@@ -5,7 +5,7 @@ FROM edcela/ros-noetic:latest
     #-[] Install dependencies
 RUN apt-get update && \
     apt-get -y upgrade
-    
+
     #-> Create directories
 RUN mkdir /app /dpds
 
@@ -59,41 +59,42 @@ RUN echo "Installing Pangolin last version ..." && \
     make -j4 && \
     make install
 
-    #-[] Install OpenCV last version
-    #-? From : http://techawarey.com/programming/install-opencv-c-c-in-ubuntu-18-04-lts-step-by-step-guide/
-    #-? Another RUN command in order to free memory
-    #-? Usual computer vision library
-RUN echo "Installing OpenCV last version ..." && \
-    cd /dpds/ && \
-    git clone https://github.com/Itseez/opencv.git opencv && \
-    git clone https://github.com/Itseez/opencv_contrib.git opencv_contrib && \
-    cd opencv/ && \
-    mkdir build && \
-    cd build/ && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D BUILD_TIFF=ON \
-    -D WITH_CUDA=OFF \
-    -D ENABLE_AVX=OFF \
-    -D WITH_OPENGL=OFF \
-    -D WITH_OPENCL=OFF \
-    -D WITH_IPP=OFF \
-    -D WITH_TBB=ON \
-    -D BUILD_TBB=ON \
-    -D WITH_EIGEN=ON \
-    -D WITH_V4L=OFF \
-    -D WITH_VTK=OFF \
-    -D BUILD_TESTS=OFF \
-    -D BUILD_PERF_TESTS=OFF \
-    -D OPENCV_GENERATE_PKGCONFIG=ON \
-    -D OPENCV_EXTRA_MODULES_PATH=/dpds/opencv_contrib/modules \
-    /dpds/opencv/ && \
-    make -j4 && \
-    make install && \
-    ldconfig
-    
+#-[] Install OpenCV last version
+#-? From : http://techawarey.com/programming/install-opencv-c-c-in-ubuntu-18-04-lts-step-by-step-guide/
+#-? Another RUN command in order to free memory
+#-? Usual computer vision library
+# RUN echo "Installing OpenCV last version ..." && \
+#     cd /dpds/ && \
+#     git clone https://github.com/Itseez/opencv.git opencv && \
+#     git clone https://github.com/Itseez/opencv_contrib.git opencv_contrib && \
+#     cd opencv/ && \
+#     mkdir build && \
+#     cd build/ && \
+#     cmake -D CMAKE_BUILD_TYPE=RELEASE \
+#     -D BUILD_TIFF=ON \
+#     -D WITH_CUDA=OFF \
+#     -D ENABLE_AVX=OFF \
+#     -D WITH_OPENGL=OFF \
+#     -D WITH_OPENCL=OFF \
+#     -D WITH_IPP=OFF \
+#     -D WITH_TBB=ON \
+#     -D BUILD_TBB=ON \
+#     -D WITH_EIGEN=ON \
+#     -D WITH_V4L=OFF \
+#     -D WITH_VTK=OFF \
+#     -D BUILD_TESTS=OFF \
+#     -D BUILD_PERF_TESTS=OFF \
+#     -D OPENCV_GENERATE_PKGCONFIG=ON \
+#     -D OPENCV_EXTRA_MODULES_PATH=/dpds/opencv_contrib/modules \
+#     /dpds/opencv/ && \
+#     make -j4 && \
+#     make install && \
+#     ldconfig
+
     #-[] Get ORB-SLAM 3 installation ready
     #-? From : https://github.com/UZ-SLAMLab/ORB_SLAM3
     #-? Another RUN command in order to free memory
+
 RUN echo "Getting ORB-SLAM 3 installation ready ..." && \
     cd /dpds/ && \
     git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git ORB_SLAM3
