@@ -24,7 +24,10 @@ RUN echo "Installing OpenCV dependencies ..." && \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
-    software-properties-common
+    software-properties-common \
+    python3-dev \
+    python3-numpy \
+    python3-pip
 
 #-> Install Pangolin dependencies
 #-? From : https://cdmana.com/2021/02/20210204202321078t.html
@@ -96,18 +99,22 @@ RUN echo "Installing Pangolin last version ..." && \
 
 RUN echo "Installing OpenCV 4.4 ..." && \
     cd /dpds/ && \
-    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.4.0.zip \
-    wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.4.0.zip \
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.4.0.zip && \
+    wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.4.0.zip && \
     unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-4.4.0 opencv && \
     mv opencv_contrib-4.4.0 opencv_contrib  && \
+    cd opencv && \
+    mkdir build && \
+    cd build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
           -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
           -D BUILD_TIFF=ON \
           -D WITH_FFMPEG=ON \
-          -D WITH_GSTREAMER=ON \
+          -D WITH_GSTREAMER=OFF \
+          -D WITH_CUDA=OFF \
           -D WITH_TBB=ON \
           -D BUILD_TBB=ON \
           -D WITH_EIGEN=ON \
@@ -115,7 +122,7 @@ RUN echo "Installing OpenCV 4.4 ..." && \
           -D WITH_LIBV4L=ON \
           -D WITH_VTK=OFF \
           -D WITH_QT=OFF \
-          -D WITH_OPENGL=ON \
+          -D WITH_OPENGL=OFF \
           -D OPENCV_ENABLE_NONFREE=ON \
           -D INSTALL_C_EXAMPLES=OFF \
           -D INSTALL_PYTHON_EXAMPLES=OFF \
