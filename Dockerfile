@@ -1,6 +1,6 @@
 # This is a Docker file to build a Docker image with ORB-SLAM 3 and all its dependencies pre-installed
 # For more info about ORB-SLAM 3 dependencies go check https://github.com/UZ-SLAMLab/ORB_SLAM3
-FROM ros-noetic:latest
+FROM edcela/ros-noetic:latest
 
     #-[] Install dependencies
 RUN apt-get update && \
