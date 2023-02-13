@@ -110,7 +110,7 @@ RUN echo "Installing OpenCV 4.4 ..." && \
     cd build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
+          -D OPENCV_EXTRA_MODULES_PATH=/dpds/opencv_contrib/modules \
           -D BUILD_TIFF=ON \
           -D WITH_FFMPEG=ON \
           -D WITH_GSTREAMER=OFF \
@@ -129,8 +129,10 @@ RUN echo "Installing OpenCV 4.4 ..." && \
           -D BUILD_NEW_PYTHON_SUPPORT=ON \
           -D OPENCV_GENERATE_PKGCONFIG=ON \
           -D BUILD_TESTS=OFF \
-          -D BUILD_EXAMPLES=OFF ..
-
+          -D BUILD_EXAMPLES=OFF /dpds/opencv/ && \
+          make -j4 && \
+          make install && \
+          ldconfig
 
 #-[] Get ORB-SLAM 3 installation ready
 #-? From : https://github.com/UZ-SLAMLab/ORB_SLAM3
