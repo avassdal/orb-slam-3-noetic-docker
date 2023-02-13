@@ -1,31 +1,31 @@
 # This is a Docker file to build a Docker image with ORB-SLAM 3 and all its dependencies pre-installed
 # For more info about ORB-SLAM 3 dependencies go check https://github.com/UZ-SLAMLab/ORB_SLAM3
-FROM lmwafer/realsense-ready:2.0-ubuntu18.04
+FROM ros-noetic:latest
 
     #-[] Install dependencies
 RUN apt-get update && \
-    apt-get -y upgrade && \
+    apt-get -y upgrade
 
     #-> Install general usage dependencies
-    echo "Installing general usage dependencies ..." && \
+RUN echo "Installing general usage dependencies ..." && \
     apt-get install -y apt-file && \
     apt-file update && \
     apt-get install -y nano \
-    pkg-config && \
+    pkg-config
 
     #-> Install OpenCV dependencies
     #-? From : http://techawarey.com/programming/install-opencv-c-c-in-ubuntu-18-04-lts-step-by-step-guide/
-    echo "Installing OpenCV dependencies ..." && \
+RUN echo "Installing OpenCV dependencies ..." && \
     apt-get install -y\
     libgtk2.0-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
-    software-properties-common && \
+    software-properties-common
 
     #-> Install Pangolin dependencies
     #-? From : https://cdmana.com/2021/02/20210204202321078t.html
-    echo "Installing Pangolin dependencies ..." && \
+RUN echo "Installing Pangolin dependencies ..." && \
     apt-get install -y \
     libglew-dev \
     libboost-dev \
@@ -33,18 +33,18 @@ RUN apt-get update && \
     libboost-filesystem-dev \
     ffmpeg \
     libavutil-dev \
-    libpng-dev && \
+    libpng-dev
 
     #-> Install Eigen 3 last version
     #-? Needs to be installed BEFORE Pangolin as it also needs Eigen
     #-> Linear algebra library
-    echo "Installing Eigen 3 last version ..." && \
-    apt-get install -y libeigen3-dev && \
+RUN echo "Installing Eigen 3 last version ..." && \
+    apt-get install -y libeigen3-dev
    
     #-> Install Pangolin last version
     #-? 3D Vizualisation tool
     #-? From : https://cdmana.com/2021/02/20210204202321078t.html
-    echo "Installing Pangolin last version ..." && \
+RUN echo "Installing Pangolin last version ..." && \
     cd /dpds/ && \
     git clone https://github.com/stevenlovegrove/Pangolin.git Pangolin && \
     cd /dpds/Pangolin/ && \
@@ -93,7 +93,7 @@ RUN echo "Installing OpenCV last version ..." && \
     #-? Another RUN command in order to free memory
 RUN echo "Getting ORB-SLAM 3 installation ready ..." && \
     cd /dpds/ && \
-    git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git ORB_SLAM3 && \
+    git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git ORB_SLAM3
     
     #-! From here, a compilation method is proposed by the repo: "chmod +x build.sh && ./build.sh"
     #-! Such method remove some control over the image build (simultaneous jobs number, directories, OpenCV version etc.) 
@@ -101,7 +101,7 @@ RUN echo "Getting ORB-SLAM 3 installation ready ..." && \
 
     #-> Install DBoW2
     #-? Images to bag-of-word library
-    echo "Installing 'built-in' DBoW2 ..." && \
+RUN echo "Installing 'built-in' DBoW2 ..." && \
     cd /dpds/ORB_SLAM3/ && \
     cd /dpds/ORB_SLAM3/Thirdparty/DBoW2/ && \
     mkdir build && \
@@ -109,31 +109,31 @@ RUN echo "Getting ORB-SLAM 3 installation ready ..." && \
     cmake -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/ \
     /dpds/ORB_SLAM3/Thirdparty/DBoW2/ && \
-    make -j4 && \
+    make -j4
 
     #-> Install g2o
     #-? Graph optimization
-    echo "Installing 'built-in' g2o ..." && \
+RUN echo "Installing 'built-in' g2o ..." && \
     cd /dpds/ORB_SLAM3/Thirdparty/g2o/ && \
     mkdir build && \
     cd build/ && \
     cmake -D CMAKE_BUILD_TYPE=Release \
     /dpds/ORB_SLAM3/Thirdparty/g2o/ && \
-    make -j4 && \
+    make -j4
 
     #-> Install Sophus
     #-? Lie groups library
-    echo "Configuring and building Thirdparty/Sophus ..." && \
+RUN echo "Configuring and building Thirdparty/Sophus ..." && \
     cd /dpds/ORB_SLAM3/Thirdparty/Sophus/ && \
     mkdir build && \
     cd build/ && \
     cmake -D CMAKE_BUILD_TYPE=Release \
     /dpds/ORB_SLAM3/Thirdparty/Sophus/ && \
-    make -j4 && \
+    make -j4
 
     #-> Uncompress vocabulary
     #-? ORB-SLAM 3 useful data
-    echo "Uncompressing vocabulary ..." && \
+RUN echo "Uncompressing vocabulary ..." && \
     cd /dpds/ORB_SLAM3/ && \
     cd Vocabulary && \
     tar -xf ORBvoc.txt.tar.gz
